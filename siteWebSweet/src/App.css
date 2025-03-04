@@ -1,0 +1,32 @@
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f000;
+}
+
+.choices-container {
+  display: flex;
+  gap: 20px;
+}
+
+.choice-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.choice-btn:hover {
+  background-color: #45a049;
+}
+
+.next-choices {
+  display: flex;
+  gap: 20px;
+  margin-left: 40px;
+}
