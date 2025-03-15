@@ -1,22 +1,37 @@
 import React, { useState } from 'react';
+import { useEffect } from "react";
 import { motion } from 'framer-motion';
 import './App.css';
-
+import Result from './Result.jsx';
 const App = () => {
-  const [steps, setSteps] = useState([{ id: 0, question: 'Quel est votre fruit préféré?', options: ['Option 1', 'Option 2'] }]); // Premier set d'options avec question
+  const [steps, setSteps] = useState([{ id: 0, question: 'Le patient est-il conscient ?', options: ['Oui', 'Non'] }]); // Premier set d'options avec question
   const [selectedOptions, setSelectedOptions] = useState([]); // Suivi des choix précédents
-
+  const questions = ['Le patient est-il conscient ?', "Le patient respire-t-il ?", "Le patient a-t-il un pouls ?", "Le patient a-t-il un pouls constant ?"];
+  const MAX_QUESTIONS = 3;
+  const resultat = [];
+  const [disabledSteps, setDisabledSteps] = useState(new Set());
   // Fonction qui gère la sélection d'une option
   const handleClick = (option, stepId) => {
+    if (disabledSteps.has(stepId)) return; // Si cette question a déjà été répondue, on ne fait rien
+
+    // Ajouter l'étape aux étapes désactivées
+    setDisabledSteps((prev) => new Set(prev).add(stepId));
+
     // Ajout du choix dans la liste des choix sélectionnés
-    setSelectedOptions((prev) =>  [...prev, option], console.log(prev));
-    
+    setSelectedOptions((prev) =>  [...prev, option]);
+
+    console.log(option)
+
     // Ajout d'un nouveau set d'options après la sélection
     const newStepId = stepId + 1;
-    const newOptions = [`Nouveau choix ${newStepId * 2 - 1}`, `Nouveau choix ${newStepId * 2}`];
-    const newQuestion = `Quelle couleur préférez-vous ?`;  // Exemple de nouvelle question dynamique
+    const newOptions = [{ label: 'Oui', value: true }, { label: 'Non', value: false }];
+    const newQuestion = questions[stepId + 1];  // Exemple de nouvelle question dynamique
     setSteps((prevSteps) => [...prevSteps, { id: newStepId, question: newQuestion, options: newOptions }]);
   };
+
+  if (selectedOptions.length === MAX_QUESTIONS + 1) {
+    return <Result selectedOptions={selectedOptions} questions={questions} />;
+  }
 
   return (
     <div className="app-container">
@@ -42,6 +57,7 @@ const App = () => {
                 transition={{ duration: 0.7 }}      // Transition fluide
                 onClick={() => handleClick(option, step.id)}
                 className="choice-btn"
+                disabled={disabledSteps.has(step.id)}
               >
                 {option}
               </motion.button>
