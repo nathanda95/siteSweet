@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 
-const Modal = ({ isOpen, onClose, children }) => {
+const PopUp = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"; // Empêche le scroll en arrière-plan
@@ -47,4 +47,4 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Modal;
+export default PopUp;
